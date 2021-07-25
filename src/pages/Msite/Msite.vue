@@ -19,9 +19,9 @@
       </template>
     </Header>
     <!--首页导航-->
-    <div class="swiper-container" v-if="categorys.length>0">
+    <div ref="swiper" class="swiper-container" v-if="categorys.length>0">
       <div class="swiper-wrapper">
-        <nav class="nav swiper-slide"  v-for="(cs,index) in categorysArr" :key="index">
+        <nav  class="nav swiper-slide"  v-for="(cs,index) in categorysArr" :key="index">
           <div class="nav-item" v-for="item in cs" :key="item.id">
             <div>
               <img :src="'https://fuss10.elemecdn.com'+item.image_url" alt="">
@@ -63,7 +63,7 @@
                 </ul>
               </section>
               <section class="shop_rating_order_left">
-                <Star :score="shop.rating" :size="24"/>
+                <!-- <Star :score="shop.rating" :size="24"/> -->
                 <div class="rating_section">{{shop.rating}}</div>
                 <div class="order_section">月售{{shop.recent_order_num}}单</div>
               </section>
@@ -96,7 +96,7 @@ import Swiper from 'swiper'
 import 'swiper/swiper.min.css'
 import Header from '../../components/Header/Header'
 
-import {onMounted, computed } from 'vue' 
+import {onMounted, computed,ref } from 'vue' 
 import { useStore ,mapState,mapActions} from 'vuex'
 import chunk from 'lodash/chunk.js'
 export default {
@@ -105,22 +105,26 @@ export default {
   },
   setup() {
     //轮播
-    const mySwiper = mySwiper
-    onMounted(()=>{
-      new Swiper ('.swiper-container', {
-      loop: true, // 循环模式选项
+    // const mySwiper = mySwiper
+    const swiper = ref('')
+    onMounted(async()=>{
+     await store.dispatch('getCategorys');
+      store.dispatch('getShops')
+      new Swiper (swiper.value, {
+      loop: true, // 循环模式选项,
+      autoplay:true,
     // 如果需要分页器
       pagination: {
         el: '.swiper-pagination',
+        // direction: 'vertical', // 垂直切换选项,
+        
       }
       }) 
-      
     });
     const store = useStore();
     const title = computed(()=> store.state.address)
     // mapActions(['getCategorys', 'getShops'])
-    store.dispatch('getCategorys');
-    store.dispatch('getShops')
+    
     const categorys = computed(()=>store.state.categorys)
     const shops = computed(()=>store.state.shops)
     const categorysArr = computed(()=>chunk(categorys.value,8))
@@ -128,7 +132,8 @@ export default {
       title,
       shops,
       categorys,
-      categorysArr
+      categorysArr,
+      swiper
     }
   }
 }
@@ -153,7 +158,7 @@ export default {
   .nav {
     padding-top: 45px;
     width: 100%;
-    height: 200px;
+    height: 225px;
     box-sizing: border-box;
     position: relative;
     background-color: #fff;
@@ -176,7 +181,7 @@ export default {
   
   .swiper-pagination {
     width: 100%;
-    height: 16px;
+    height: 10px;
     // background-color: yellow;
     text-align: center;
     line-height: 16px;

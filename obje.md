@@ -167,3 +167,14 @@
         return ['vue-style-loader'].concat(loaders)
         }
     }
+
+### 表单验证
+  1. 前端验证
+  2. 后端验证
+  3. token --后端 jsonwebtoken 用户唯一标识
+      根据id值，固定密钥，有时间加密生成token
+      携带token的方式 
+      1. cookie  2. 请求参数 3.请求体[authorization]
+      扩展：http 请求无状态请求
+            https 
+        1. cookie 大小有限4kb 容易让人截获(服务器生成，保存在浏览器端，每次请求都会携带cooke)

@@ -14,7 +14,7 @@
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="mobile">
               <span>{{mobileMessage}}</span>
-              <button :disabled='!isRigthNumber'  @click="isClick" >获取验证码</button>
+              <button :disabled='!isRigthNumber'  @click="isClick">{{countDown>0 ? `短信已发送${countDown}s` : '获取验证码'}}</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
@@ -59,24 +59,45 @@
 
 <script>
 import {computed, ref, watchEffect} from 'vue'
+import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
 import { useField } from 'vee-validate';
-import {reqSendcode,reqLogin} from '../../api/index'
+import {reqSendcode,reqLogin,reqloginPhone} from '../../api/index'
 import verify from '../../utils/vee-validate-schema'
 export default {
   setup() {
     const router = useRouter()
+    const store = useStore()
     const isShow = ref(true)
     const iShow = ref(false)
     // const phone = ref(value)
-    const isRigthNumber = computed(()=>{
-      return /^1\d{10}$/.test(Number(mobile.value))
+    let disableShow = ref('')
+    const isRigthNumber = computed({
+      get(){
+        disableShow.value  = /^1\d{10}$/.test(Number(mobile.value))
+        return disableShow.value
+      },
+      set(newvalue) {
+        return disableShow.value =  newvalue
+      }
     })
     //手机获取验证码
+    let countDown = ref('')
+    
     
     const isClick = async() => {
-      const result = await  reqSendcode(phone)
-      console.log(result);
+      if (countDown.value==='') {
+        countDown.value = 5;
+      const intervalId = setInterval(() => {
+        countDown.value--
+        if (countDown.value<=0) {
+          clearInterval(intervalId)
+          countDown.value = ''
+        }
+      }, 1000);
+      const result = await reqSendcode(mobile)
+      alert(result.msg)
+      }
     }
     watchEffect(()=>{
       // console.log(isRigthNumber.value);
@@ -86,13 +107,31 @@ export default {
     // const name = ref('');
     // const pwd = ref('');
     // const captcha = ref('');
+    
     //获取验证码
     const reqCaptcha = () => {
       getCaptcha.value.src = "http://localhost:4000/captcha?time=" + Date.now()
     }
     const onLogin = async() => {
-      // const result = await reqLogin({name,pwd:password,getCaptcha})
-      console.log(result);
+      let result
+      //手机登录
+      if (mobile.value&&code.value) {
+         result = await reqloginPhone({phone:mobile.value,code:code.value})
+         
+      }
+      //用户名密码登录
+      if (name.value&&password.value&&codeRigth) {
+         result = await reqLogin({name:name.value,pwd:password.value,captcha:codeRigth.value})
+         codeRigth.value = '';
+         reqCaptcha()
+      }
+      if (result.code===0) {
+          router.replace('/profile')
+          store.dispatch('getUser',{user:result.data})
+        }else{
+          alert('前端验证失败输入错误请重新输入')
+        }
+      
     }
     //vue 表单验证
     const { value:mobile, errorMessage:mobileMessage } = useField("_", verify.mobile);
@@ -101,6 +140,8 @@ export default {
     const { value:password, errorMessage:passwordMessage } = useField("_", verify.password);
     const { value:codeRigth, errorMessage:codeRigthMessage } = useField("_", verify.code);
     return {
+      countDown,
+      disableShow,
       router,
       isShow,
       isRigthNumber,

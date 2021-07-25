@@ -12,14 +12,14 @@
         <div class="profile_image" >
           <i class="iconfont icon-icon-test" ></i>
         </div>
-      <div class="user-info">
-        <p class="user-info-top">登录/注册</p>
+      <div class="user-info" >
+          <p class="user-info-top">{{store.state.user ? store.state.user.name : '登录|注册'}}</p>
         <p>
           <span class="user-icon"><i class="iconfont icon-iconmobile"></i></span>
           <span class="icon-mobile-number">暂无绑定手机号</span>
         </p>
       </div>
-      <span class="arrow"><i class="iconfont icon-Forward" @click="router.push('/login')"></i></span>
+      <span class="arrow" v-if="!store.state.user"><i class="iconfont icon-Forward" @click="goLogin"></i></span>
       </div>
       <div></div>
     </section>
@@ -67,20 +67,39 @@
         <span><i class="iconfont icon-Forward"></i></span>
       </div>
     </section>
+    <section class="profile_out">
+      <div @click="onLogin">
+        <span>退出登录</span>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import Header from '../../components/Header/Header'
 import {useRoute, useRouter} from 'vue-router'
+import {useStore} from 'vuex'
 export default {
   components: {
     Header
   },
   setup() {
     const router = useRouter()
+    const store = useStore()
+    //登录
+    const goLogin = () => {
+        !!!store.state.user._id && router.replace('/login')
+    }
+    const onLogin = () => {
+      localStorage.removeItem('token_key')
+      store.commit('delete_user')
+      // location.replace()
+    }
     return {
-      router
+      router,
+      store,
+      goLogin,
+      onLogin
     }
   }
   
@@ -186,5 +205,26 @@ export default {
     width: 100%;
     height: 53px;
   }
+}
+.profile_out{
+  div{
+    width: 100%;
+    height: 40px;
+    background-color: #02a774;
+    color: #fff;
+    line-height: 40px;
+    font-size: 20px;
+    
+    span{
+      background-color: #02a774;
+      width: 70%;
+      height: 40px; 
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+      
+    }
+  }
+  
 }
 </style>
