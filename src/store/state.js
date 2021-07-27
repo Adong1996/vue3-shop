@@ -6,6 +6,9 @@ export default () => {
     categorys: [],
     shops: [],
     token: '',
-    user: ''
+    user: '',
+    info: {},
+    goods: [],
+    ratings: []
   }
 }
