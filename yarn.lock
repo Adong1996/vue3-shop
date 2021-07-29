@@ -903,6 +903,18 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
+"@better-scroll/core@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.nlark.com/@better-scroll/core/download/@better-scroll/core-2.4.1.tgz?cache=0&sync_timestamp=1624517205164&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40better-scroll%2Fcore%2Fdownload%2F%40better-scroll%2Fcore-2.4.1.tgz#1f67a9cfe6738f870be5b90b13aafcc188a01e3b"
+  integrity sha1-H2epz+Zzj4cL5bkLE6r8wYigHjs=
+  dependencies:
+    "@better-scroll/shared-utils" "^2.4.1"
+
+"@better-scroll/shared-utils@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.nlark.com/@better-scroll/shared-utils/download/@better-scroll/shared-utils-2.4.1.tgz#b5e4e751a023180f1123d2c3773c75a863f71f77"
+  integrity sha1-teTnUaAjGA8RI9LDdzx1qGP3H3c=
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.npm.taobao.org/@hapi/address/download/@hapi/address-2.1.4.tgz?cache=0&sync_timestamp=1603524710662&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40hapi%2Faddress%2Fdownload%2F%40hapi%2Faddress-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -7622,10 +7634,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swiper@^6.7.5:
-  version "6.7.5"
-  resolved "https://registry.nlark.com/swiper/download/swiper-6.7.5.tgz?cache=0&sync_timestamp=1625145077063&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fswiper%2Fdownload%2Fswiper-6.7.5.tgz#8f150c7281919b7d6bea00889e9dc16448e92986"
-  integrity sha1-jxUMcoGRm31r6gCInp3BZEjpKYY=
+swiper@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.nlark.com/swiper/download/swiper-6.8.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fswiper%2Fdownload%2Fswiper-6.8.0.tgz#61c850f49ba778e403f00a01fe0b768bd85d0d20"
+  integrity sha1-YchQ9JuneOQD8AoB/gt2i9hdDSA=
   dependencies:
     dom7 "^3.0.0"
     ssr-window "^3.0.0"
