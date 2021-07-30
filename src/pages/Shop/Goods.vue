@@ -1,7 +1,7 @@
 <template>
   <div class="goods" >
     <div class="menu-wrapper" ref="BScrollLeft">
-      <ul >
+      <ul ref="leftIu">
         <li class="menu-wrapper-item" 
             v-for="(item, index) in goods" 
             :key="item.name"
@@ -34,6 +34,9 @@
                   <span class="now">￥{{item.price}}</span>
                   <span class="old" v-if="item.oldPrice">￥{{item.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <CarContorl/>
+                </div>
               </div>
             </li>
           </ul>
@@ -50,11 +53,13 @@ import { useStore } from "vuex";
 import { computed, ref, onMounted, watch, nextTick, watchEffect, onUpdated } from "vue";
 import BScroll from '@better-scroll/core'
 import Food from '../../components/Food/Food'
+import CarContorl from '../../components/CarContorl/CarContorl'
 
 export default {
   name: 'goods',
   components: {
-    Food
+    Food,
+    CarContorl
   },
    setup () {
     const store = useStore()
@@ -71,25 +76,32 @@ export default {
     const scrollY = ref(0) // 左侧列表滑动的y轴坐标, 右侧滑动过程中实时更新
     const tops = ref([]) // 右侧所有分类的<li>的top的数组, 在列表显示之后更新一次
     // const food = ref({}) // 需要显示的food
+    let leftIndex
+    const leftIu = ref(null)
     const currentIndex = computed(()=>{
-      const index = tops.value.findIndex((top,index)=> scrollY.value >= top && scrollY.value < tops.value[index+1])
+      let index
+      index = tops.value.findIndex((top,index)=> scrollY.value >= top && scrollY.value < tops.value[index+1])
+      if (index != leftIndex && leftScroll) {
+        leftIndex = index
+        const li = leftIu.value.children[index]
+        leftScroll.scrollToElement(li, 300)
+      }
       return index
     })
     //初始化滑动
     const BScrollLeft = ref(null) 
     const BScrollRigth = ref(null) 
+    let leftScroll
     let rightScroll
     const initScroll = () => {
-      new BScroll(BScrollLeft.value, {
+      leftScroll = new BScroll(BScrollLeft.value, {
         observeDOM: true,
       })
       rightScroll = new BScroll(BScrollRigth.value, {
         probeType: 1
       })
       rightScroll.on('scrollEnd',({x, y})=>{
-        console.log(x, y);
         scrollY.value = Math.abs(y)
-        console.log(scrollY.value);
       })
     }
     // 统计右侧所有分类li的top数组 
@@ -137,7 +149,8 @@ export default {
       scrollY,
       initTops,
       rigthUi,
-      clickItem
+      clickItem,
+      leftIu
     }
 
   }
@@ -198,6 +211,8 @@ export default {
           }
         }
         .content{
+          width: 100%;
+          position: relative;
           padding-left: 10px;
           .name{
             margin: 2px 0 0;
@@ -220,6 +235,7 @@ export default {
             }
           }
           .price{
+            display: inline-block;
             font-weight: 700;
             line-height: 24px;
             .now{
@@ -232,6 +248,13 @@ export default {
               font-size: 12px;
               color: #93999f;
             }
+          }
+          .cartcontrol-wrapper{
+            display: inline-block;
+            position: absolute;
+            right: 15px;
+            font-size: 15px;
+            text-align: center;
           }
         }
       }

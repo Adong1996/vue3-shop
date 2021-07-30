@@ -15,6 +15,9 @@
             <span class="now">￥{{fooditem.price}}</span>
             <span class="old" v-if="fooditem.oldPrice">￥{{fooditem.oldPrice}}</span>
           </div>
+          <div class="cartcontrol-wrapper">
+            <CarContorl/>
+          </div>
         </div>
       </div>
       <div  class="food-cover" @click="isShow = false"></div>
@@ -24,8 +27,12 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import CarContorl from '../CarContorl/CarContorl'
 
 export default {
+  components: {
+    CarContorl
+  },
   props: {
     fooditem: {
       type: Object,
@@ -106,6 +113,7 @@ export default {
         color: #93999f
       }
       .price{
+        display: inline-block;
         .now{
           font-weight: 700;
           color: #f01414;
@@ -117,6 +125,9 @@ export default {
           color: #93999f;
         }
         
+      }
+      .cartcontrol-wrapper{
+        float: right;
       }
     }
   }
