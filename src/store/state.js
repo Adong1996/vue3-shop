@@ -9,6 +9,7 @@ export default () => {
     user: '',
     info: {},
     goods: [],
-    ratings: []
+    ratings: [],
+    carList: [] //购物车列表
   }
 }

@@ -7,7 +7,9 @@ import {
   DELETE_USER,
   RECEIVE_INFO,
   RECEIVE_GOODS,
-  RECEIVE_RATINGS
+  RECEIVE_RATINGS,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -38,5 +40,21 @@ export default {
   },
   [RECEIVE_RATINGS](state,{ratings}) {
     state.ratings = ratings
+  },
+  [ADD_FOOD_COUNT](state,food) {
+    if (food.count) {
+      food.count++
+    }else{
+      food.count = 1
+      state.carList.push(food)      
+    }
+  },
+  [REDUCE_FOOD_COUNT](state,food) {
+    if(food.count > 0){
+      food.count--
+      if (food.count===0) {
+        state.carList.splice(state.carList.indexOf(food), 1)
+      }
+    }
   },
 }

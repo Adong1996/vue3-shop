@@ -14,7 +14,9 @@ import {RECEIVE_ADDRESS,
         RECEIVE_TOKEN,
         RECEIVE_INFO,
         RECEIVE_GOODS,
-        RECEIVE_RATINGS
+        RECEIVE_RATINGS,
+        ADD_FOOD_COUNT,
+        REDUCE_FOOD_COUNT
       } from './mutation-types'
 
 export default {
@@ -68,6 +70,14 @@ export default {
     const result = await reqRatings()
     if (result.code===0) {
       commit(RECEIVE_RATINGS,{ratings:result.data})
+    }
+  },
+  //更新food中的数量的同步action
+  updateFoodCount({commit},{isAdd,food}) {
+    if(isAdd){
+      commit(ADD_FOOD_COUNT,food)
+    }else{
+      commit(REDUCE_FOOD_COUNT,food)
     }
   }
 }

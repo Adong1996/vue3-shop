@@ -1,5 +1,5 @@
 <template>
-  <div class="goods" >
+  <div class="goods" v-if="goods.length>0">
     <div class="menu-wrapper" ref="BScrollLeft">
       <ul ref="leftIu">
         <li class="menu-wrapper-item" 
@@ -35,7 +35,8 @@
                   <span class="old" v-if="item.oldPrice">￥{{item.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <CarContorl/>
+                  <!-- 商品列表 -->
+                  <CarContorl :item='item' ></CarContorl>
                 </div>
               </div>
             </li>
@@ -46,20 +47,24 @@
   </div>
   
   <Food :fooditem='fooditem' ref="isshowFood"></Food>
+
+  <ShopCar></ShopCar>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref, onMounted, watch, nextTick, watchEffect, onUpdated } from "vue";
+import { computed, ref, onMounted, watch, nextTick } from "vue";
 import BScroll from '@better-scroll/core'
 import Food from '../../components/Food/Food'
 import CarContorl from '../../components/CarContorl/CarContorl'
+import ShopCar from '../../components/ShopCar/ShopCar'
 
 export default {
   name: 'goods',
   components: {
     Food,
-    CarContorl
+    CarContorl,
+    ShopCar
   },
    setup () {
     const store = useStore()
@@ -135,7 +140,7 @@ export default {
         initTops()
       }) 
     }) 
-    
+   
     
     return {
       goods,
@@ -150,7 +155,7 @@ export default {
       initTops,
       rigthUi,
       clickItem,
-      leftIu
+      leftIu,
     }
 
   }

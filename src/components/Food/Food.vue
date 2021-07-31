@@ -16,7 +16,8 @@
             <span class="old" v-if="fooditem.oldPrice">￥{{fooditem.oldPrice}}</span>
           </div>
           <div class="cartcontrol-wrapper">
-            <CarContorl/>
+            <!-- 单个商品加价 -->
+            <CarContorl :item='fooditem'></CarContorl>
           </div>
         </div>
       </div>
@@ -25,30 +26,27 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from "vue";
-import { useStore } from "vuex";
+import { ref } from "vue";
 import CarContorl from '../CarContorl/CarContorl'
 
 export default {
-  components: {
-    CarContorl
-  },
   props: {
     fooditem: {
       type: Object,
       required: true
     },
   },
-  setup(props) {
+  components: {
+    CarContorl
+  },
+  setup() {
     const isShow = ref(false)
-    const store = useStore()
-    const food = computed(()=>store.state.goods[0])
     const onShow = () => {
       isShow.value = true
     }
+    //
 
     return {
-      food,
       isShow,
       onShow
     }
