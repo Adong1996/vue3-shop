@@ -48,8 +48,10 @@
           <i class="iconfont icon-fujin"></i>
           <span>附近商家</span>
         </div>
-        <ul class="shop-list" v-for="(shop, index) in shops" key="shop.id" v-if="shops.length>0">
-          <li class="shop-item">
+        <ul class="shop-list" v-if="shops.length>0">
+          <li class="shop-item" v-for="(shop, index) in shops" key="shop.id"
+               @click="router.push(`/shop/${shop.id}`)">
+               <!-- @click="router.push({ name: 'shop', params: { id: 'shop.id' } }) -->
             <div class="shop-item-left">
               <img :src="'https://fuss10.elemecdn.com'+shop.image_path" alt="">
             </div>
@@ -94,11 +96,12 @@
 <script>
 import Swiper from 'swiper'
 import 'swiper/swiper.min.css'
-import Header from '../../components/Header/Header'
 
+import { useRouter, useRoute } from 'vue-router'
 import {onMounted, computed,ref } from 'vue' 
-import { useStore ,mapState,mapActions} from 'vuex'
+import { useStore } from 'vuex'
 import chunk from 'lodash/chunk.js'
+import Header from '../../components/Header/Header'
 export default {
   components: {
     Header
@@ -128,12 +131,14 @@ export default {
     const categorys = computed(()=>store.state.categorys)
     const shops = computed(()=>store.state.shops)
     const categorysArr = computed(()=>chunk(categorys.value,8))
+    const router = useRouter()
     return {
       title,
       shops,
       categorys,
       categorysArr,
-      swiper
+      swiper,
+      router
     }
   }
 }

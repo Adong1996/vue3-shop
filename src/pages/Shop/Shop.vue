@@ -2,9 +2,9 @@
   <div> 
     <ShopHeader></ShopHeader>
     <div class="tab">
-      <span :class="{on:route.path==='/shop/goods'}" @click="Onclick('/shop/goods')">点餐</span>
-      <span :class="{on:route.path==='/shop/ratings'}" @click="Onclick('/shop/ratings')">评论</span>
-      <span :class="{on:route.path==='/shop/info'}" @click="Onclick('/shop/info')">商家</span>
+      <span :class="{on:route.path===`/shop/${id}/goods`}"    @click="Onclick(`/shop/${id}/goods`)">点餐</span>
+      <span :class="{on:route.path===`/shop/${id}/ratings`}"  @click="Onclick(`/shop/${id}/ratings`)">评论</span>
+      <span :class="{on:route.path===`/shop/${id}/info`}"     @click="Onclick(`/shop/${id}/info`)">商家</span>
     </div>
     <router-view></router-view>
   </div>
@@ -12,27 +12,30 @@
 
 <script>
 import ShopHeader from '../../components/ShopHeader/ShopHeader'
+import {DELETEL_CAR_LIST} from '../../store/mutation-types'
 import {useRouter, useRoute} from 'vue-router'
 import {useStore} from 'vuex'
-import {onMounted} from 'vue'
+import {onMounted, onBeforeUnmount} from 'vue'
 export default {
   components: {
     ShopHeader
   },
-  setup() {
+  props: ['id'],
+  setup(props) {
     const router = useRouter()
     const route = useRoute()
     const store = useStore()
     onMounted(()=>{
-      store.dispatch('getGoods')
-      store.dispatch('getRatings')
-      store.dispatch('getInfo')
+      store.dispatch('getShop', props.id)
     })
     const Onclick = (path) => {
       if (route.path != path) {
         router.push(path)
       }else router.currentRoute.value.path = path
       }
+      onBeforeUnmount(()=>{
+        // store.commit(DELETEL_CAR_LIST)
+      })
     return {
       router,
       route,

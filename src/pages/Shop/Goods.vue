@@ -1,5 +1,5 @@
 <template>
-  <div class="goods" v-if="goods.length>0">
+  <div class="goods" v-if="goods">
     <div class="menu-wrapper" ref="BScrollLeft">
       <ul ref="leftIu">
         <li class="menu-wrapper-item" 
@@ -68,7 +68,7 @@ export default {
   },
    setup () {
     const store = useStore()
-    const goods = computed(()=>store.state.goods)
+    const goods = computed(()=>store.state.shop.goods)
     let fooditem = ref({})
     const isshowFood = ref(null)
     const showFood = (food) => {
@@ -129,7 +129,7 @@ export default {
       rightScroll.scrollTo(0, -tops.value[index], 1000)
     }
     onMounted(()=>{
-      if (goods.value.length > 0) {
+      if (goods.value && goods.value.length > 0) {
         initScroll()
         initTops()
       }

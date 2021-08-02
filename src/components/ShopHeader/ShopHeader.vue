@@ -1,7 +1,7 @@
 <template>
   <div class="shop-header">
     <nav class="shop-nav"> 
-        <i class="iconfont icon-left-4" ></i>
+        <i class="iconfont icon-left-4" @click="router.push('/msite')"></i>
     </nav>
 
     <div class="shop-content" @click="isInfo = false">
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="shop-brief-modal" :class="{showInfo:isInfo}">
+    <div class="shop-brief-modal" :class="{showInfo:isInfo}" v-if="info">
         <div class="brief-modal-content">
           <h2 class="content-title">
             <span class="content-tag">
@@ -79,7 +79,7 @@
         <div class="brief-modal-cover" @click="isInfo = true"></div>
     </div>  
      
-    <div class="activity-sheet" :class="{showprice:isPrice}">
+    <div class="activity-sheet" :class="{showprice:isPrice}" v-if="info">
       <div class="activity-sheet-content">
         <h2 class="activity-sheet-title">
         优惠活动</h2>
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import {useRouter, useRoute} from 'vue-router';
 import {useStore} from 'vuex'
 import {ref, onMounted, computed} from 'vue'
 export default {
@@ -112,11 +113,14 @@ export default {
     const isPrice = ref(true)
     onMounted(()=>{
     })
-    const info = computed( () =>  store.state.info)
+    const info = computed( () =>  store.state.shop.info)
+
+    const router = useRouter()
     return {
       info,
       isInfo,
       isPrice,
+      router
     }
   }
 

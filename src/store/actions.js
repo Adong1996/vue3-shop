@@ -4,9 +4,11 @@ vuex的actions模块
 import {reqAddress,
         reqCategorys, 
         reqShops,
-        reqInfo,
-        reqGoods,
-        reqRatings} from '../api'
+        // reqInfo,
+        // reqGoods,
+        // reqRatings,
+        reqShop
+      } from '../api'
 import {RECEIVE_ADDRESS, 
         RECEIVE_CATEGORYS, 
         RECEIVE_SHOPS, 
@@ -16,7 +18,8 @@ import {RECEIVE_ADDRESS,
         RECEIVE_GOODS,
         RECEIVE_RATINGS,
         ADD_FOOD_COUNT,
-        REDUCE_FOOD_COUNT
+        REDUCE_FOOD_COUNT,
+        RECEIVE_SHOP
       } from './mutation-types'
 
 export default {
@@ -51,33 +54,24 @@ export default {
     delete user.token
     commit(RECEIVE_USER,{user})
   },
-  //异步保存商家信息
-  async getInfo({commit}) {
-    const result = await reqInfo()
-    if (result.code===0) {
-      commit(RECEIVE_INFO,{info:result.data})
-    }
-  },
-  //异步保存商家商品
-  async getGoods({commit}) {
-    const result = await reqGoods()
-    if (result.code===0) {
-      commit(RECEIVE_GOODS,{goods:result.data})
-    }
-  },
-  //异步保存商家评论
-  async getRatings({commit}) {
-    const result = await reqRatings()
-    if (result.code===0) {
-      commit(RECEIVE_RATINGS,{ratings:result.data})
-    }
-  },
-  //更新food中的数量的同步action
   updateFoodCount({commit},{isAdd,food}) {
     if(isAdd){
       commit(ADD_FOOD_COUNT,food)
     }else{
       commit(REDUCE_FOOD_COUNT,food)
     }
-  }
+  },
+  //异步请求商家
+  async getShop({commit, state}, id) {
+    if (id === state.shop.id) {
+      return
+    }
+    // if (state.shop.id) {
+    //   commit(RECEIVE_SHOP, {}) // 空容器中不带shop对象
+    // }
+    const result = await reqShop(id)
+    if (result.code===0) {
+      commit(RECEIVE_SHOP, {shop: result.data})
+    }
+  },
 }

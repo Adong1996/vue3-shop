@@ -7,9 +7,12 @@ export default () => {
     shops: [],
     token: '',
     user: '',
-    info: {},
-    goods: [],
-    ratings: [],
-    carList: [] //购物车列表
+
+    // info: {},
+    // goods: [],
+    // ratings: [],
+
+    carList: [] ,//购物车列表
+    shop: {} //商家
   }
 }

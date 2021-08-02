@@ -9,18 +9,25 @@ import Info from '../pages/Shop/Info.vue'
 import Ratings from '../pages/Shop/Ratings.vue'
 
 const routes = [
-  { path: '/', redirect: '/profile' },
+  { path: '', redirect: '/profile' },
   { path: '/msite', component: Msite, meta: {isShowFooter: true},},
   { path: '/order', component: Order, meta: {isShowFooter: true} },
   { path: '/profile', component: Profile, meta: {isShowFooter: true} },
   { path: '/search', component: Search, meta: {isShowFooter: true} },
   { path: '/login', component: Login, meta: {isShowFooter: false}},
-  { path: '/shop', component: Shop, meta: {isShowFooter: false},
-    redirect: '/shop/goods',
+  { path: '/shop/:id', component: Shop, meta: {isShowFooter: false}, props: true, name: 'shop',
     children: [
-      {path: 'goods',component: Goods},
+      // {path: '/shop',redirect: '/shop/:id'},
+      {path: 'goods',component: Goods, name: 'goods'},
       {path: 'info',component: Info},
       {path: 'ratings',component: Ratings},
+      {path: '/shop/:id', redirect: to => {
+        const { hash, params, query } = to
+        return `/shop/${params.id}/goods`
+        // console.log(hash);
+        // console.log(params);
+        // console.log(query);
+      }}
     ]
   },
 ]

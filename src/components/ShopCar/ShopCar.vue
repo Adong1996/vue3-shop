@@ -1,7 +1,7 @@
 <template>
-  <div class="shopcart">
+  <div class="shopcart" v-if="info">
     <div class="content">
-      <div class="contentLeft">
+      <div class="contentLeft" @click="showList">
         <div class="logo-wrapper" :class="{onLogoWrapper:carAll>0}">
           <div class="logo">
             <i class="iconfont icon-FontAwesomecartarrowdown"></i>
@@ -13,42 +13,91 @@
       </div>
       <div class="contentRigth" >
         <div v-if="!carAll">￥{{info.minPrice}}元起送</div>
-        <div v-else :class="{oncontentRigth:lastPrice>0}">{{lastPrice<0? `还差￥${-lastPrice}起送` : '去结算' }}</div>
+        <div v-else :class="{oncontentRigth:lastPrice >= 0}">{{lastPrice < 0? `还差￥${-lastPrice}起送` : '去结算' }}</div>
       </div>
       
     </div>
-    <div class="shopcart-list">
-      <div class="list-header"></div>
-      <div class="list-content"></div>
+    <div class="shopcart-list" v-show="isList && carList.length > 0" >
+      <div class="list-header">
+        <h1 class="title">购物车</h1>
+        <span class="empty" @click="deleCarList">清空</span>
+      </div>
+      <div class="list-content" ref="BsListe">
+        <ul>
+          <li class="food" v-for="item in carList">
+            <span class="name">{{item.name}}</span>
+            <div class="price">￥{{item.price}}</div>
+            <div class="cartcontrol-wrapper">
+              <CarContorl :item='item'></CarContorl>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="list-mask"></div>
+  <div class="list-mask" v-show="isList && carList.length > 0" @click="showList"></div>
 </template>
 <script>
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, ref, onUpdated, nextTick } from "vue";
+import BScroll from '@better-scroll/core'
+import CarContorl from '../CarContorl/CarContorl'
+import { DELETEL_CAR_LIST } from "../../store/mutation-types";
 export default {
+  components: {
+    CarContorl
+  },
   setup() {
     const store = useStore()
     //商家信息
-    const info = computed(()=>store.state.info)
+    const info = computed(()=>store.state.shop.info)
     //总价格
     const carPrice = computed(()=>store.getters.getCarPrice)
      // 总数量
     const carAll = computed(()=>store.getters.getCarAll)
     //还差多少钱起送
     const lastPrice = computed(()=>store.getters.getLastPrice)
+    //购物车列表
+    const carList = computed(()=> store.state.carList)
+    // 显示购物车列表 购物车列表轮播
+    const BsListe = ref(null)
+    const isList = ref(false)
+    const showList = async() => {
+      if ( carList.value.length > 0) {
+        isList.value = !isList.value
+        await nextTick(()=>{
+          new BScroll(BsListe.value,{})
+          console.log('11');
+        })
+      }
+    }
+    // 同步显示购物车列表
+    onUpdated(()=>{
+      if (lastPrice.value.length<=0) {
+        isList.value = false
+      }
+    })
+    // 清空购物车列表
+    const deleCarList = () => {
+      store.commit(DELETEL_CAR_LIST)
+      isList.value = false
+    }
     return{
       info,
       carPrice,
       carAll,
-      lastPrice
+      lastPrice,
+      carList,
+      isList,
+      showList,
+      deleCarList,
+      BsListe
     }
   }
 }
 </script>
 
-<style lang="less" >
+<style lang="less" scoped>
 
 .onLogoWrapper{
   background-color: #02a774;
@@ -60,17 +109,14 @@ font-weight: 600;
 height: 100%;
 }
 .shopcart{
-  
   position: fixed;
-  display: flex;
+  // display: flex;
   left: 0;
   bottom: 0;
   width: 100%;
   z-index: 50;
   height: 45px;
-  // text-align: center;
-  // line-height: 45px;
-  
+  // width: 100%;
   .content{
     background-color: rgb(110, 101, 101);
     font-size: 0;
@@ -142,9 +188,68 @@ height: 100%;
       // background-color: rgba(73, 69, 69, 0.4);
     }
   }
+  .shopcart-list{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    transform: translateY(-100%);
+    .list-header{
+    height: 41px;
+    line-height: 41px;
+    padding: 0 18px;
+    background: #f3f5f7;
+    border-bottom: 1px solid rgba(7,17,27,0.1);
+      .title{
+        float: left;
+        font-size: 14px;
+        color: #07111b;
+      }
+      .empty{
+        float: right;
+        font-size: 12px;
+        color: #00a0dc;
+      }
+    }
+    .list-content{
+      padding: 0 18px;
+      max-height: 217px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+      .food{
+        padding: 12px 0;
+        box-sizing: border-box;
+        position: relative;
+        line-height: 14px;
+        .name{
+          font-size: 14px;
+          color: #07111b;
+          line-height: 19px;
+        }
+        .price{
+          font-size: 14px;
+          font-weight: 700;
+          color: #f01414;
+          display: inline-block;
+          position: absolute;
+          right: 110px;
+          top: 14px;
+        }
+        .cartcontrol-wrapper{
+          // padding-left: 10px;
+          // background-color: red;
+          position: absolute;
+          right: 30px;
+          top: 12px;
+        }
+      }
+    }
+  }
 }
 .list-mask{
-  display: none;
+    // display: none;
     position: fixed;
     top: 0;
     left: 0;

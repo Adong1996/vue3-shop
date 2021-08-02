@@ -41,9 +41,11 @@ export const reqAutologin = () => ajax.get('/auto_login',{
 })
 
 //mock
-// 获取goods
-export const reqGoods = () => ajax('/goods')
-// 获取info
-export const reqInfo = () => ajax('/info')
-// 获取ratings
-export const reqRatings = () => ajax('/ratings')
+// // 获取goods
+// export const reqGoods = () => ajax('/goods')
+// // 获取info
+// export const reqInfo = () => ajax('/info')
+// // 获取ratings
+// export const reqRatings = () => ajax('/ratings')
+//获取shop
+export const reqShop = (id) => ajax('/shop/' + id)

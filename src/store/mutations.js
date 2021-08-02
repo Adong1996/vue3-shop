@@ -5,11 +5,15 @@ import {
   RECEIVE_USER,
   RECEIVE_TOKEN,
   DELETE_USER,
-  RECEIVE_INFO,
-  RECEIVE_GOODS,
-  RECEIVE_RATINGS,
+
+  // RECEIVE_INFO,
+  // RECEIVE_GOODS,
+  // RECEIVE_RATINGS,
+
   ADD_FOOD_COUNT,
-  REDUCE_FOOD_COUNT
+  REDUCE_FOOD_COUNT,
+  DELETEL_CAR_LIST,
+  RECEIVE_SHOP
 } from './mutation-types'
 
 export default {
@@ -32,15 +36,7 @@ export default {
     state.user = '';
     state.token = ''
   },
-  [RECEIVE_INFO](state,{info}) {
-    state.info = info
-  },
-  [RECEIVE_GOODS](state,{goods}) {
-    state.goods = goods
-  },
-  [RECEIVE_RATINGS](state,{ratings}) {
-    state.ratings = ratings
-  },
+
   [ADD_FOOD_COUNT](state,food) {
     if (food.count) {
       food.count++
@@ -57,4 +53,16 @@ export default {
       }
     }
   },
+  [DELETEL_CAR_LIST](state) {
+    state.carList.forEach(item => {
+      // delete item.count
+      item.count = ''
+    });
+    state.carList = []
+  },
+  //保存商家
+  [RECEIVE_SHOP](state, {shop={},carList=[]}) {
+    state.shop = shop;
+    state.carList = carList
+  }
 }
