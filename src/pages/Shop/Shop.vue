@@ -12,10 +12,11 @@
 
 <script>
 import ShopHeader from '../../components/ShopHeader/ShopHeader'
-import {DELETEL_CAR_LIST} from '../../store/mutation-types'
+// import {DELETEL_CAR_LIST} from '../../store/mutation-types'
+import { saveCarList } from "../../utils/shop";
 import {useRouter, useRoute} from 'vue-router'
 import {useStore} from 'vuex'
-import {onMounted, onBeforeUnmount} from 'vue'
+import {onMounted, onBeforeUnmount, computed} from 'vue'
 export default {
   components: {
     ShopHeader
@@ -33,9 +34,22 @@ export default {
         router.push(path)
       }else router.currentRoute.value.path = path
       }
-      onBeforeUnmount(()=>{
-        // store.commit(DELETEL_CAR_LIST)
-      })
+      // 在退去当前商家界面时调用
+    const shop = computed(()=>store.state.shop)  
+    const carList = computed(()=>store.state.carList)  
+    onBeforeUnmount(()=>{
+      // 将当前商家的购物车数据保存
+      // console.log(shops.value);
+      // const {shop:{id}, carList} = shops.value //多层结构
+      if (shop.value && carList.value) {
+        saveCarList(shop.value.id, carList.value)
+      }
+    })
+    window.addEventListener('unload', ()=>{
+      if (shop.value && carList.value) {
+        saveCarList(shop.value.id, carList.value)
+      }
+    })
     return {
       router,
       route,

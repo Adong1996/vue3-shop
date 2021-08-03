@@ -21,7 +21,7 @@ import {RECEIVE_ADDRESS,
         REDUCE_FOOD_COUNT,
         RECEIVE_SHOP
       } from './mutation-types'
-
+import { getCarList } from "../utils/shop.js";
 export default {
   // 异步获取地址
   async getAddress({commit,state}) {
@@ -63,7 +63,7 @@ export default {
   },
   //异步请求商家
   async getShop({commit, state}, id) {
-    if (id === state.shop.id) {
+    if (id == state.shop.id) {
       return
     }
     // if (state.shop.id) {
@@ -71,7 +71,10 @@ export default {
     // }
     const result = await reqShop(id)
     if (result.code===0) {
-      commit(RECEIVE_SHOP, {shop: result.data})
+      const shop = result.data
+      //读取sessiionStorage的数据
+      const carList =  getCarList(shop)
+      commit(RECEIVE_SHOP, {shop, carList})
     }
   },
 }

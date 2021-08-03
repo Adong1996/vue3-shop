@@ -28,7 +28,7 @@
                 <p class="desc">{{item.description}}</p>
                 <div class="extra">
                   <span class="count">月售{{item.sellCount}}份</span>
-                  <span>好评率{{item.rating}}</span>
+                  <span>好评率{{item.rating}}%</span>
                 </div>
                 <div class="price">
                   <span class="now">￥{{item.price}}</span>
@@ -68,7 +68,9 @@ export default {
   },
    setup () {
     const store = useStore()
-    const goods = computed(()=>store.state.shop.goods)
+    const goods = computed(()=>{
+      return store.state.shop.goods
+    })
     let fooditem = ref({})
     const isshowFood = ref(null)
     const showFood = (food) => {

@@ -14,15 +14,8 @@ export default {
   //还差多少钱起送
    
   getLastPrice(state, getters) {
-    return getters.getCarPrice - state.shop.info.minPrice
+    if (state.shop.info) {
+      return getters.getCarPrice - state.shop.info.minPrice
+    }
   },
-   // 清空购物车列表
-  // delCarListe(state) {
-  //   if (state.carListe.length > 0) {
-  //     state.carList.forEach(item => {
-  //       item.count = ''
-  //     });
-  //   }
-  //   return state.carList
-  // } 
 }

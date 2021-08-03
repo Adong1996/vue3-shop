@@ -4,22 +4,22 @@
         <i class="iconfont icon-left-4" @click="router.push('/msite')"></i>
     </nav>
 
-    <div class="shop-content" @click="isInfo = false">
+    <div class="shop-content" @click="isInfo = false" v-if="info">
       <img class="content-image" src="https://fuss10.elemecdn.com/8/40/02872ce8aefe75c16d3190e75ad61jpeg.jpeg" alt="">
       <div class="header-content">
         <h2 class="content-title">
           <span class="mini-tag">品牌</span>
-          <span class="content-center">嘉禾一品（温都水城）</span>
+          <span class="content-center">{{info.name}}</span>
           <i class="iconfont icon-sanjiaoxing3"></i>
         </h2>
         <div class="shop-message">
-          <span>4.2</span>
-          <span>月售90单</span>
+          <span>{{info.rating}}</span>
+          <span>月售{{info.sellCount}}单</span>
           <span>商家专送</span>
-          <span>约28分钟</span>
-          <span>距离1000m</span>
+          <span>约{{info.deliveryTime}}分钟</span>
+          <span>距离{{info.distance}}</span>
         </div>
-        <p class="shop-notice">是以粥为特色的中式营养快餐，自2004年10月18日创立“嘉和一品”品牌至今，不断优化管理，积极创新，立足于“贴近百姓生活，服务千家万户”</p>
+        <p class="shop-notice">{{info.bulletin}}</p>
         <div></div>
       </div>
     </div>

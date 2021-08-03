@@ -6,55 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<style>
-  input{
-    border: none;
-    outline:none
-    
-  }
-  input:focus{
-            border: 1px solid blue;
-          }
-  div{
-    border: 1px solid red ;
-  }
-</style>
 <body>
-  <div class="swiper-container">
-    <form action="">
-      <div>
-        <input type="tel" maxlength="11" placeholder="手机号" 
-        <span>按钮</span>
-      </div>
-      <input type="tel" maxlength="11" placeholder="手机号">
-      <input type="text">
-    </form>
-</div>
-<script>
-      function arr(arr) {
-        let barr = [];
-        let sarr =[]
-        arr.forEach((item, index) => {
-          if (sarr.length === 0 ) {
-            barr.push(sarr)
-            
-          }
-          if (sarr.length < 8) {
-            sarr.push(item)
-          } else {
-            sarr.push(item)
-            sarr = []
-          }
-        });
-        return barr
-      }
-      
-      // let arre = [];
-      // arre[length] = 2
-      // console.log(arre.length);
-      // arre[length] = 2
-      // console.log(arre.length);
-      console.log(arr([1,2,3,1,1,1,11,2,2,3,33,4,4,4,4,]));
-</script>
+  <script>
+    const array = [{a: 1}, {a: 1}, {a: 2}, {a: 5}];
+    const demo = array.reduce((pre, item)=>{
+      pre[item.a], 
+      pre[item.a]  
+      return pre
+    },{})
+    console.log(demo);
+    var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+    var countedNames = names.reduce(function (allNames, name) {
+        // allNames[name];
+        allNames[name] = 1;
+      return allNames;
+    }, {});
+    console.log(countedNames);
+  </script>
 </body>
 </html>

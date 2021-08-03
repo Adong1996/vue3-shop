@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div class="search">
     <Header>
       <template v-slot:center>
         <span>
@@ -7,21 +7,14 @@
         </span>
       </template>
     </Header>
-     <div class="wrapper" ref="demo">
-      <ul>
-        <li v-for="i in 200">
-          <h1>1111111111</h1>
-        </li>
-        
-        ...
-      </ul>
-    <!-- 这里可以放一些其它的 DOM，但不会影响滚动 -->
-    </div>
+     <form class="search_form" action="#">
+      <input type="search" name="search" placeholder="请输入商家或美食名称" class="search_input">
+      <input type="submit" name="submit" class="search_submit">
+    </form>
   </div>
 </template>
 
 <script>
-import BScroll from '@better-scroll/core'
 import {ref,reactive,onMounted, nextTick} from 'vue'
 import Header from '../../components/Header/Header'
   export default {
@@ -29,25 +22,49 @@ import Header from '../../components/Header/Header'
     Header
   },
   setup() {
-    const demo = ref(null)
     onMounted(()=>{
-      // new BScroll(demo.value, {})
     }),
     nextTick(()=>{
-      new BScroll(demo.value, {})
     })
     return {
-      demo
     }
   }
  
   }
 </script>
 
-<style lang="less">
-.wrapper{
-  //  height: 400px;
-  // overflow: hidden;
-  // width: 50px;
+<style lang="less" scoped>
+.search{
+  width: 100%;
+  position: relative;
+  .search_form{
+    position: absolute;
+    top: 45px;
+    background-color: #fff;
+    padding: 12px 8px;
+    input{
+      height: 35px;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-weight: bold;
+      outline: none;
+    }
+    .search_input{
+        float: left;
+        width: 79%;
+        border: 4px solid #f2f2f2;
+        font-size: 14px;
+        color: #333;
+        background-color: #f2f2f2;
+      }
+      .search_submit{
+        float: right;
+        width: 18%;
+        border: 4px solid #02a774;
+        font-size: 16px;
+        color: #fff;
+        background-color: #02a774;
+      }
+  }
 }
 </style>

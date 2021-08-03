@@ -44,8 +44,6 @@ export default {
     const onShow = () => {
       isShow.value = true
     }
-    //
-
     return {
       isShow,
       onShow
