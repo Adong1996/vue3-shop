@@ -9,4 +9,11 @@ const router = createRouter({
   routes, // `routes: routes` 的缩写
 })
 
+
+router.beforeEach((to, from) => {
+  console.log(to,  from);
+  // ...
+  // 返回 false 以取消导航
+  // return false
+})
 export default router
