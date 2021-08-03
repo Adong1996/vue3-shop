@@ -2,6 +2,7 @@
 ### 此项目为外卖Web App (SPA)
 对应接口还需启动后台服务器，后台对应数据库为mongodb
 对应地址 https://github.com/cd646392218/vue3-shop-server.git
+对应的 login 界面没有设计手机登录，还需用户名
 
 ### 包括商家, 商品, 购物车, 用户等多个子模块
 
